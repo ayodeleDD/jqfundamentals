@@ -11,7 +11,6 @@ class SandBox {
     */
     this.$ulSelector1 = $('#myList > li#myListItem');
     this.$ulSelector2 = $('#myList').find('li:nth-child(3)');
-    // For better performance in modern browsers, use $("your-pure-css-selector").eq(index) instead.
     this.$ulSelector3 = $('#myList li').eq(2);
 
     //Select the label for the search input using an attribute selector.
