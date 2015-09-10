@@ -66,7 +66,7 @@ class SandBox {
                          .children('input[type="submit"]');
 
     //Select the first list item in the #slideshow element; add the class "current" to it, and then add a class of "disabled" to its sibling elements.
-    $('#slideshow li').first()
+    $('#slideshow li').filter(':first')
                       .addClass('current')
                       .siblings()
                       .addClass('disabled');
@@ -84,7 +84,7 @@ class SandBox {
     $('#myList li').filter(':even').remove();
 
     //Add another h2 and another paragraph to the last div.module
-    this.$module.last()
+    this.$module.filter(':last')
                 .append($('<h2 />', {'text': 'Another H2'}))
                 .append($('<p />', {'text': 'Another paragraph'}));
 
