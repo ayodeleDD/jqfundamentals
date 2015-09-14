@@ -103,7 +103,7 @@ class SandBox {
     //Add a new div.module to the page after the last one; put a copy of one of the existing images inside of it.
     const $newDiv = $('<div />', {'class': 'module'});
     $newDiv.append($('img')
-      .clone(true)
+      .clone()
       .get(1))
       .insertAfter(this.$module.last());
   }
