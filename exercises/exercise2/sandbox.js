@@ -19,8 +19,8 @@ class SandBox {
     //Figure out how many elements on the page are hidden
     // In some browsers :hidden includes head, title, script, etc...
     this.$hiddenElements = $('body')
-                          .find(':hidden')
-                          .not('script');
+      .find(':hidden')
+      .not('script');
 
     //Figure out how many image elements on the page have an alt attribute.
     this.$altAttribute = $('img[alt]');
@@ -41,7 +41,14 @@ class SandBox {
   }
 
   selectors() {
-    console.log(`Selectors: \nSelector 1: ${this.$ulSelector1.length} \nSelector 2: ${this.$ulSelector2.length} \nSelector 3: ${this.$ulSelector3.length} \nModule Class: ${this.$module.length} \nSearch Input: ${this.$searchInput.length} \nOdd Rows: ${this.$oddRows.length} \nHidden Elements: ${this.$hiddenElements.length} \nImages With Alt Attribute: ${this.$altAttribute.length}`);
+    console.log(`Selectors: \nSelector 1: ${this.$ulSelector1.length} 
+      \nSelector 2: ${this.$ulSelector2.length} 
+      \nSelector 3: ${this.$ulSelector3.length} 
+      \nModule Class: ${this.$module.length} 
+      \nSearch Input: ${this.$searchInput.length} 
+      \nOdd Rows: ${this.$oddRows.length} 
+      \nHidden Elements: ${this.$hiddenElements.length} 
+      \nImages With Alt Attribute: ${this.$altAttribute.length}`);
   }
 
   traversing() {
@@ -53,50 +60,52 @@ class SandBox {
     });
 
     //Select the search input text box, then traverse up to the form and add a class to the form.
-    this.$searchInput.parent('form').addClass('myForm');
+    this.$searchInput.parent('#search').addClass('myForm');
 
     //Select the list item inside #myList that has a class of “current” and remove that class from it; add a class of “current” to the next list item.
     $('ul#myList > li.current').removeClass('current')
-                               .next()
-                               .addClass('current');
+      .next()
+      .addClass('current');
 
     //Select the select element inside #specials; traverse your way to the submit button.
-    this.$selectElement.parent()
-                         .next()
-                         .children('input[type="submit"]');
+    const $d = this.$selectElement.closest('ul')
+      .find('input[type="submit"]');
 
     //Select the first list item in the #slideshow element; add the class "current" to it, and then add a class of "disabled" to its sibling elements.
     $('#slideshow li').filter(':first')
-                      .addClass('current')
-                      .siblings()
-                      .addClass('disabled');
+      .addClass('current')
+      .siblings()
+      .addClass('disabled');
   }
 
   manipulators() {
     console.log(`\nManipulating:`);
     const $myList = $('#myList');
+    const fragment = []
     //Add five new list items to the end of the unordered list #myList.
     for (let i = 8; i <= 12; i++) {
-      $myList.append(`<li>List Item ${i}</li>`)
+      fragment.push(`<li>List Item ${i}</li>`);
     } //end for loop
+    $myList.append(fragment);
 
     //Remove the odd list items
     $('#myList li').filter(':even').remove();
 
     //Add another h2 and another paragraph to the last div.module
     this.$module.filter(':last')
-                .append($('<h2 />', {'text': 'Another H2'}))
-                .append($('<p />', {'text': 'Another paragraph'}));
+      .append($('<h2 />', {'text': 'Another H2'}),
+       $('<p />', {'text': 'Another paragraph'}));
 
     //Add another option to the select element; give the option the value "Wednesday"
-    this.$selectElement.append($('<option />', {
-      'value': 'Wednesday',
-      'text': 'Wednesday',
-    }));
+    const $tuesday = $('#specials option[value="tuesday"]');
+    $('<option />', {'value': 'Wednesday', 'text': 'Wednesday'}).insertAfter($tuesday);
 
     //Add a new div.module to the page after the last one; put a copy of one of the existing images inside of it.
     const $newDiv = $('<div />', {'class': 'module'});
-    $newDiv.append($('img').clone(true).get(1)).insertAfter(this.$module.last());
+    $newDiv.append($('img')
+      .clone(true)
+      .get(1))
+      .insertAfter(this.$module.last());
   }
 }
 
