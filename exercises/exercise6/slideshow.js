@@ -8,17 +8,17 @@ class SlideShow {
   }
 
   init() {
-    const $total = this.$slideElements.find('li').length;
+    const total = this.$slideElements.find('li').length;
     const $div = $('<div />')
       .addClass('slideNavigation')
-      .html(` of ${$total}`)
+      .html(` of ${total}`)
       .insertBefore('#header');
 
     const $span = $('<span />')
       .addClass('currentIndex')
       .prependTo($div);
 
-    const $slides = this.$slideElements.prependTo('body');
+    this.$slideElements.prependTo('body');
     const $items = this.$slideElements.find('li').hide();
     this.$slideElements.find('p').css({'width': '67%', 'text-align': 'justify'});
 
@@ -46,8 +46,8 @@ class SlideShow {
   }
 
   showCurrentSlide() {
-    const $current = this.$slideElements.find('li:visible').index() + 1;
-    $('span.currentIndex').html(`${$current}`);
+    const current = this.$slideElements.find('li:visible').index() + 1;
+    $('span.currentIndex').html(`${current}`);
   }
 }
 
