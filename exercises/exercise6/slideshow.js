@@ -11,7 +11,7 @@ class SlideShow {
     const total = this.$slideElements.find('li').length;
     const $span = $('<span />')
       .addClass('currentIndex')
-      .html(`1`);
+      .text(`1`);
     const $div = $('<div />')
       .addClass('slideNavigation')
       .html(` of ${total}`)
@@ -27,7 +27,6 @@ class SlideShow {
 
   showInitialSlide($items) {
     $items.first().fadeIn(this.speed, function() {
-      this.showCurrentSlide();
       this.doSlideShow();
     }.bind(this)).delay(1000);
   }
