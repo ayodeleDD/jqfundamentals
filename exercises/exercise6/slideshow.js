@@ -9,14 +9,14 @@ class SlideShow {
 
   init() {
     const total = this.$slideElements.find('li').length;
+    const $span = $('<span />')
+      .addClass('currentIndex')
+      .html(`1`);
     const $div = $('<div />')
       .addClass('slideNavigation')
       .html(` of ${total}`)
+      .prepend($span)
       .insertBefore('#header');
-
-    const $span = $('<span />')
-      .addClass('currentIndex')
-      .prependTo($div);
 
     this.$slideElements.prependTo('body');
     const $items = this.$slideElements.find('li').hide();
