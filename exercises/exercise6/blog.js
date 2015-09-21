@@ -13,20 +13,17 @@ class RevealHiddenText {
   revealExcerpt($blog) {
     // Clicking on a headline in the #blog div should slide down the excerpt paragraph
     // Clicking on another headline should slide down its excerpt paragraph, and slide up any other currently showing excerpt paragraphs.
-    $blog
-      .find('h3')
-      .on('click', function(e) {
-        e.preventDefault();
-        $(this)
-          .next('p')
-          .slideToggle('slow')
-          .parent()
-          .siblings()
-          .find('p')
-          .slideUp();
-      });
-  }
+    $blog.find('h3').on('click', function(e) {
+      e.preventDefault();
+      const $p = $(this).next();
 
+      $p.slideToggle('slow');
+
+      $('p.excerpt')
+        .not($p)
+        .slideUp();
+    });
+  }
 }
 
 $(function() {

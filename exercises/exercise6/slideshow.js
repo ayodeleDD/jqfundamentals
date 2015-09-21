@@ -2,43 +2,52 @@
 
 class SlideShow {
   constructor() {
-    this.init();
     this.speed = 1000;
+    this.$slideElements = $('#slideshow');
+    this.init();
   }
 
   init() {
-    const $slideElements = $('#slideshow');
-    this.showInitialSlide($slideElements);
-    $('<div />').addClass('currentIndex').insertAfter($slideElements);
+    const $total = this.$slideElements.find('li').length;
+    const $div = $('<div />')
+      .addClass('slideNavigation')
+      .html(` of ${$total}`)
+      .insertBefore('#header');
+
+    const $span = $('<span />')
+      .addClass('currentIndex')
+      .prependTo($div);
+
+    const $slides = this.$slideElements.prependTo('body');
+    const $items = this.$slideElements.find('li').hide();
+    this.$slideElements.find('p').css({'width': '67%', 'text-align': 'justify'});
+
+    this.showInitialSlide($items);
   }
 
-  showCurrentAndTotalSlide($slideElements) {
-    const $total = $slideElements.find('li').length;
-    const $current = $slideElements.find('li:visible').index() + 1;
-    $('div.currentIndex').html(`${$current} of ${$total}`);
-  }
-
-  showInitialSlide($slideElements) {
-    const $slides = $slideElements.prependTo('body');
-    const $items = $slides.find('li').hide();
-    $slideElements.find('p').css({'width': '67%', 'text-align': 'justify'});
+  showInitialSlide($items) {
     $items.first().fadeIn(this.speed, function() {
-      this.showCurrentAndTotalSlide($slideElements);
-      this.doSlideShow($slideElements);
+      this.showCurrentSlide();
+      this.doSlideShow();
     }.bind(this)).delay(1000);
   }
 
-  doSlideShow($slideElements) {
-    const $visible = $slideElements.find('li:visible');
+  doSlideShow() {
+    const $visible = this.$slideElements.find('li:visible');
     let $next = $visible.next();
-    (!$next.length) ? ($next = $slideElements.find('li').first()) : $next;
+    ($next.length) ? $next : ($next = this.$slideElements.find('li').first());
     $visible.fadeOut(1000, function() {
       $next.fadeIn(this.speed).delay(200);
     });
+    this.showCurrentSlide();
     setTimeout(function() {
-      this.showCurrentAndTotalSlide($slideElements);
-      this.doSlideShow($slideElements);
+      this.doSlideShow();
     }.bind(this), 300);
+  }
+
+  showCurrentSlide() {
+    const $current = this.$slideElements.find('li:visible').index() + 1;
+    $('span.currentIndex').html(`${$current}`);
   }
 }
 
