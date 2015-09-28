@@ -8,7 +8,10 @@ class AjaxLoadHtml {
 
   init() {
     const $h3 = this.$blog.find('h3');
+    this.loadContent($h3);
+  }
 
+  loadContent($h3) {
     $h3
     .each(function() {
       const $div = $('<div />');
