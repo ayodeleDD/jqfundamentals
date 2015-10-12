@@ -6,7 +6,7 @@ class ProductDisplay {
   }
 
   init() {
-    this.getProductDetails();
+    this.getProductData();
     this.data;
     this.$brands = $('#brands');
     this.$colors = $('#colors');
@@ -15,15 +15,15 @@ class ProductDisplay {
       .add(this.$colors)
       .add(this.$available)
       .on('click', function() {
-        this.getCheckedOptions();
+        this.filterProductData();
       }.bind(this));
 
     $('#all').on('click', function() {
-      this.getAllProducts(this.data);
+      this.getProducts(this.data);
     }.bind(this));
   }
 
-  getProductDetails() {
+  getProductData() {
     $.ajax({
       url: 'product.json',
       dataType: 'json',
@@ -39,66 +39,62 @@ class ProductDisplay {
 
   cachedData(data) {
     this.data = data;
-    this.getAllProducts(this.data);
+    this.getProducts(this.data);
   }
 
-  getCheckedOptions() {
+  filterProductData() {
     const $checkedBrands = this.$brands.find('input:checked');
     const $checkedColors = this.$colors.find('input:checked');
     const availability = $('#available').is(':checked');
+    const $container = $('#main_content');
+    const $span = $('span');
     let itemStatus = ''
     if(availability) {
       itemStatus = 0;
     }
-    this.filterProducts($checkedBrands, $checkedColors, itemStatus);
-  }
-
-  filterProducts(brands, colors, itemStatus) {
-    const $products = $('#main_content');
-    const $span = $('span');
     let $brandDataValue = '';
     let $colorDataValue = '';
     let filter = [];
-    $products
+    $container
       .find('span:visible')
       .hide();
 
-    if (brands.length && colors.length && itemStatus === 0) {
-      brands.each(function() {
+    if ($checkedBrands.length && $checkedColors.length && itemStatus === 0) {
+      $checkedBrands.each(function() {
         $brandDataValue = $(this).val();
-        colors.each(function() {
+        $checkedColors.each(function() {
           $colorDataValue = $(this).val();
           $($span.filter(`[data-brand="${$brandDataValue}"]`).filter(`[data-color="${$colorDataValue}"]`).filter(`[data-soldout="${itemStatus}"]`)).show();
         });
       });
-    } else if (brands.length && colors.length || brands.length && itemStatus === 0 || colors.length && itemStatus === 0) {
-        brands.each(function() {
+    } else if ($checkedBrands.length && $checkedColors.length || $checkedBrands.length && itemStatus === 0 || $checkedColors.length && itemStatus === 0) {
+        $checkedBrands.each(function() {
           $brandDataValue = $(this).val();
-          colors.each(function() {
+          $checkedColors.each(function() {
             $colorDataValue = $(this).val();
             $($span.filter(`[data-brand="${$brandDataValue}"]`).filter(`[data-color="${$colorDataValue}"]`)).show();
           });
         });
-        brands.each(function() {
+        $checkedBrands.each(function() {
           $brandDataValue = $(this).val();
           $($span.filter(`[data-brand="${$brandDataValue}"]`).filter(`[data-soldout="${itemStatus}"]`)).show();
         });
-        colors.each(function() {
+        $checkedColors.each(function() {
           $colorDataValue = $(this).val();
           $($span.filter(`[data-color="${$colorDataValue}"]`).filter(`[data-soldout="${itemStatus}"]`)).show();
         });
-      } else if (brands.length || colors.length || itemStatus === 0) {
-        brands.each(function() {
+      } else if ($checkedBrands.length || $checkedColors.length || itemStatus === 0) {
+        $checkedBrands.each(function() {
           $brandDataValue = $(this).val();
           $($span.filter(`[data-brand="${$brandDataValue}"]`)).show();
         });
-        colors.each(function() {
+        $checkedColors.each(function() {
           $colorDataValue = $(this).val();
           $($span.filter(`[data-color="${$colorDataValue}"]`)).show();
         });
         $($span.filter(`[data-soldout="${itemStatus}"]`)).show();
       } else {
-        this.getAllProducts(this.data);
+        this.getProducts(this.data);
       }
   }
 
@@ -115,7 +111,7 @@ class ProductDisplay {
     $('#main_content').append($span);
   }
 
-  getAllProducts(data) {
+  getProducts(data) {
     $('#main_content').empty();
     $('#filter').find('input:checked').prop('checked', false);
     $.each(data, function(index, data) {
