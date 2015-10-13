@@ -5,14 +5,18 @@ class StackedDiv {
     this.$addButton = addButton;
     this.$mainContainer = $('#main_content');
     this.counter = 1;
-    this.init();
-    this.highlightAndDelete();
+    this.bindEvents();
   }
 
-  init() {
+  bindEvents() {
+    const self = this;
     this.$addButton.on('click', function() {
       this.addStackedDiv();
     }.bind(this));
+    this.$mainContainer.on('click', 'div', function() {
+      const $div = $(this);
+      self.highlightAndDelete($div);
+    });
   }
 
   addStackedDiv() {
@@ -21,16 +25,13 @@ class StackedDiv {
     this.$mainContainer.append($div.append($p));
   }
 
-  highlightAndDelete() {
-    const self = this;
-    this.$mainContainer.on('click', 'div', function() {
-      if($(this).is(':last-child')) {
-        $(this).remove();
-        --self.counter;
-      } else {
-        $(this).toggleClass('highlight');
-      }
-    });
+  highlightAndDelete($div) {
+    if($div.is(':last-child')) {
+      $div.remove();
+      --this.counter;
+    } else {
+      $div.toggleClass('highlight');
+    }
   }
 }
 
